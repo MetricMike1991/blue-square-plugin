@@ -6,6 +6,42 @@ Version: 1.0.1
 Author: Your Name
 */
 
+if ( ! function_exists( 'bsp_fs' ) ) {
+    // Create a helper function for easy SDK access.
+    function bsp_fs() {
+        global $bsp_fs;
+
+        if ( ! isset( $bsp_fs ) ) {
+            // Include Freemius SDK.
+            require_once dirname( __FILE__ ) . '/vendor/freemius/start.php';
+            $bsp_fs = fs_dynamic_init( array(
+                'id'                  => '20613',
+                'slug'                => 'blue-square-plugin',
+                'type'                => 'plugin',
+                'public_key'          => 'pk_aa2bca56a61e0ed6b824d890caeb0',
+                'is_premium'          => false,
+                'has_addons'          => false,
+                'has_paid_plans'      => false,
+                'menu'                => array(
+                    'slug'           => 'blue-square',
+                    'account'        => false,
+                    'support'        => false,
+                    'parent'         => array(
+                        'slug' => 'options-general.php',
+                    ),
+                ),
+            ) );
+        }
+
+        return $bsp_fs;
+    }
+
+    // Init Freemius.
+    bsp_fs();
+    // Signal that SDK was initiated.
+    do_action( 'bsp_fs_loaded' );
+}
+
 if (!defined('ABSPATH')) exit;
 
 // ----- Helpers: get settings with safe defaults -----
